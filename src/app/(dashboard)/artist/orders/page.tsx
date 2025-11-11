@@ -1,37 +1,28 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Artwork } from "@/server/shared/types/artwork.types";
-import { OrderItem } from "@/server/shared/types/order.types";
-import { getOrdersByArtist } from "@/core/queries/order/getOrdersByArtist";
-import Image from "next/image";
+import { useSession } from "next-auth/react";
 import Sidebar from "@/app/(dashboard)/artist/dashboard/page";
+import Image from "next/image";
 import styles from "@/src/styles/artists/orders.module.scss";
 
-interface OrdersByArtwork {
-  artwork: Artwork;
-  orders: OrderItem[];
-}
+// Core
+import { getOrdersByArtistQuery, OrdersByArtworkDTO } from "@/domain/order/queries/getOrdersByArtist.query";
 
 const ArtistOrdersPage = () => {
   const { data: session } = useSession();
-  const artistId = session?.user && 'id' in session.user ? (session.user as { id: string }).id : undefined;
-  const [data, setData] = useState<OrdersByArtwork[]>([]);
+  const artistId = session?.user?.id;
+  const [data, setData] = useState<OrdersByArtworkDTO[]>([]);
 
   useEffect(() => {
     if (!artistId) return;
 
-    const fetchData = async () => {
-      try {
-        const result = await getOrdersByArtist(artistId);
-        setData(result);
-      } catch (err) {
-        console.error("Error fetching orders:", err);
-      }
+    const fetchOrders = async () => {
+      const orders = await getOrdersByArtistQuery(artistId);
+      setData(orders);
     };
 
-    fetchData();
+    fetchOrders();
   }, [artistId]);
 
   if (!session) return <p>Bitte logge dich ein, um deine Bestellungen zu sehen.</p>;
@@ -46,7 +37,7 @@ const ArtistOrdersPage = () => {
           data.map(({ artwork, orders }) => (
             <div key={artwork.id} className={styles.orderItem}>
               <Image
-                src={artwork.image_url}
+                src={artwork.imageUrl}
                 alt={artwork.name}
                 width={300}
                 height={300}

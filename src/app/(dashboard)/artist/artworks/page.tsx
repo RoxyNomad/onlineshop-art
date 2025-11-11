@@ -1,20 +1,21 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
-import { useSession } from "next-auth/react"; // session management
-import { Artwork } from "@/server/shared/types/artwork.types";
+import { useSession } from "next-auth/react";
+import { Artwork } from "@/domain/artworks/entities/artwork.entity";
 import Image from "next/image";
-import styles from "@/src/styles/artists/artworks.module.scss";
+import styles from "@/styles/modules/artist/artworks.module.scss";
 import Sidebar from "@/app/(dashboard)/artist/dashboard/page";
-import ImageUploader from "@/components/common/ImageUploader";
+import ImageUploader from "@/ui/dashboard/artist/ImageUploader";
 
-// Core
-import { getArtworksByArtist } from "@/core/queries/artwork/getArtworksByArtist";
-import { uploadArtwork } from "@/core/commands/artwork/uploadArtwork";
+// Core Layer (DDD + CQRS)
+import { getArtworksByArtistQuery } from "@/domain/artworks/queries/getArtworksByArtist.query";
+import { uploadArtworkCommand } from "@/domain/artworks/commands/uploadArtwork.command";
 
 const Artworks: NextPage & { disableHeader?: boolean } = () => {
   const { data: session } = useSession();
   const artistId = session?.user?.id;
-
   const [artworks, setArtworks] = useState<Artwork[]>([]);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const Artworks: NextPage & { disableHeader?: boolean } = () => {
 
     const fetchArtworks = async () => {
       try {
-        const data = await getArtworksByArtist(artistId);
+        const data = await getArtworksByArtistQuery(artistId);
         setArtworks(data);
       } catch (err) {
         console.error("Error fetching artworks:", err);
@@ -38,8 +39,7 @@ const Artworks: NextPage & { disableHeader?: boolean } = () => {
     if (!artistId) return;
 
     try {
-      // Default values, hier kannst du Input-Felder erweitern
-      const newArtwork = await uploadArtwork({
+      const newArtwork = await uploadArtworkCommand({
         artistId,
         name: "Neues Kunstwerk",
         baseColor: "Weiß",
@@ -65,7 +65,7 @@ const Artworks: NextPage & { disableHeader?: boolean } = () => {
             <div key={artwork.id}>
               <Image
                 className={styles.picture}
-                src={artwork.image_url}
+                src={artwork.imageUrl}
                 alt={`Artwork ${artwork.id}`}
                 width={300}
                 height={200}

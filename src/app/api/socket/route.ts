@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Server as SocketIOServer, Socket } from "socket.io";
 import type { Server as HTTPServer } from "http";
-import { ChatService } from "@/server/modules/chat/chat.service";
+import { ChatService } from "@/infrastructure/services/chat.service";
 
 // Typ für das Datenobjekt beim Senden einer Nachricht
 interface SendMessageData {

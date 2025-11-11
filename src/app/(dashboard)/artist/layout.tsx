@@ -1,20 +1,37 @@
-import { ReactNode } from "react";
-import Sidebar from "@/components/dashboard/ArtistSidebar";
+'use client';
+
+import { ReactNode, useEffect, useState } from "react";
+import Sidebar from "@/ui/dashboard/artist/ArtistSidebar";
+import { GetArtistProfileQuery } from "@/domain/artist/queries/getArtistProfile.query";
+import { ArtistProfile } from "@/domain/artist/entities/artistProfile.entity";
+import { AuthRepository } from "@/infrastructure/repositories/auth.repository";
 
 interface ArtistLayoutProps {
   children: ReactNode;
 }
 
+const artistId = "irgendeine-id"; // z.B. aus AuthContext oder Token
+const query = new GetArtistProfileQuery(repo, artistId);
+
 const ArtistLayout = ({ children }: ArtistLayoutProps) => {
+  const [profile, setProfile] = useState<ArtistProfile | null>(null);
+  
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const artistProfile = await query.execute(); // Query ausführen
+      setProfile(artistProfile);
+    };
+    fetchProfile();
+  }, []);
+
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />  {/* Sidebar bleibt fix */}
+      <Sidebar profile={profile} />  {/* Sidebar wird mit Query-Daten befüllt */}
       <main style={{ flex: 1, padding: '1rem' }}>
-        {children} {/* Inhalt der Page */}
+        {children}
       </main>
     </div>
   );
 };
 
 export default ArtistLayout;
-// Export the component for use in other parts of the application

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getArtistById } from "@/core/queries/artist/getArtistById";
-import { updateArtistProfile } from "@/core/commands/artist/updateArtistProfile";
+import { getArtistProfileQuery } from "@/domain/artist/queries/getArtistProfile.query";
+import { updateArtistProfileCommand } from "@/domain/artist/commands/updateArtistProfile";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -9,20 +9,18 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ error: "artistId is required" }, { status: 400 });
     }
 
-    const artist = await getArtistById(artistId);
+    // ✅ Use Query Layer (not repository directly)
+    const artist = await getArtistProfileQuery(artistId);
+
     if (!artist) {
       return NextResponse.json({ error: "Artist not found" }, { status: 404 });
     }
 
     return NextResponse.json(artist);
   } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.error(err.message);
-      return NextResponse.json({ error: err.message }, { status: 500 });
-    } else {
-      console.error("Unknown error", err);
-      return NextResponse.json({ error: "Unknown error" }, { status: 500 });
-    }
+    console.error(err);
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };
 
@@ -35,22 +33,20 @@ export const PUT = async (req: NextRequest) => {
       return NextResponse.json({ error: "artistId is required" }, { status: 400 });
     }
 
-    const updatedArtist = await updateArtistProfile(artistId, {
-      artist_name: name,
+    // ✅ Use Command Layer (business logic via service)
+    const updatedArtist = await updateArtistProfileCommand({
+      artistId,
+      name,
       bio,
-      portfolio_url: portfolioUrl,
-      profile_image_url: profileImageUrl,
-      cover_image_url: coverImageUrl,
+      portfolioUrl,
+      profileImageUrl,
+      coverImageUrl,
     });
 
     return NextResponse.json(updatedArtist, { status: 200 });
   } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.error(err.message);
-      return NextResponse.json({ error: err.message }, { status: 500 });
-    } else {
-      console.error("Unknown error", err);
-      return NextResponse.json({ error: "Unknown error" }, { status: 500 });
-    }
+    console.error(err);
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 };

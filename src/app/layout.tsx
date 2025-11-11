@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
-import Header from "@/src/components/common/Header";
-import "@/src/styles/global.module.scss";
-import I18nProvider from "@/src/components/common/I18nProvider";
+import Header from "@/ui/shop/Header";
+import "@/styles/global.module.scss";
+import I18nProvider from "@/ui/common/I18nProvider";
 
 export const metadata = {
     title: "Galleryshop",

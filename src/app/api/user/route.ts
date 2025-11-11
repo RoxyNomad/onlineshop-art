@@ -15,17 +15,19 @@ export const GET = async (req: NextRequest) => {
   }
 
   try {
-    // Bei Neon: query() gibt direkt ein Array zurück
-    const users: User[] = await pool.query<User>(
+    // Query NeonDB correctly
+    const result = await pool.query<User>(
       "SELECT id, email, name FROM users WHERE email = $1",
       [email]
     );
 
-    if (users.length === 0) {
+    const user = result[0];
+
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json(users[0]);
+    return NextResponse.json(user);
   } catch (err: unknown) {
     console.error("Error fetching user:", err);
     return NextResponse.json(

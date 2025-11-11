@@ -8,8 +8,9 @@ export const GET = async () => {
       `SELECT DISTINCT base_color FROM artworks WHERE base_color IS NOT NULL`
     );
 
-    // result[0] enthält die eigentlichen Daten
-    const rows = result[0] as { base_color: string }[];
+    type DBColorRow = { base_color: string };
+    const rows: DBColorRow[] = result[0];
+
 
     // Antwort: Array von Strings (Farbnamen)
     const colors = rows.map(r => r.base_color);

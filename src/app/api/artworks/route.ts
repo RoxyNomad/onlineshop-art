@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { uploadArtwork } from "@/core/commands/artwork/uploadArtwork";
-import { getArtworksByArtist } from "@/core/queries/artwork/getArtworksByArtist";
-import { Artwork } from "@/server/shared/types/artwork.types";
+import { uploadArtwork } from "@/domain/artworks/commands/uploadArtwork.command";
+import { getArtworksByArtist } from "@/domain/artworks/queries/getArtworksByArtist.query";
+import { Artwork } from "@/infrastructure/shared/types/artwork.types";
 
 // POST: Upload a new artwork
 export const POST = async (req: NextRequest) => {

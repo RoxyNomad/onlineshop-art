@@ -1,5 +1,5 @@
-import OrdersChart from "@/components/shop/OrdersChart";
-import NewMessageCounter from "@/components/chat/NewMessageCounter";
+import OrdersChart from "@/ui/dashboard/artist/OrdersChart";
+import NewMessageCounter from "@/ui/chat/NewMessageCounter";
 
 const ArtistDashboardPage = () => {
   return (

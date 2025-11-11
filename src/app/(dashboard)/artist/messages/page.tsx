@@ -1,21 +1,26 @@
-import Sidebar from "@/components/dashboard/ArtistSidebar";
-import Chat from "@/components/chat/Chat";
+"use client";
 
-/**
- * ArtistMessages page in the App Router
- */
+import { useSession } from "next-auth/react";
+import Sidebar from "@/ui/dashboard/artist/ArtistSidebar";
+import Chat from "@/ui/chat/ChatContainer";
+
 const ArtistMessagesPage = () => {
+  const { data: session } = useSession();
+
+  // Extrahiere die User-ID sicher aus der Session
+  const currentUserId =
+    session?.user && "id" in session.user ? (session.user as { id: string }).id : undefined;
+
+  if (!currentUserId) {
+    return <p>Bitte logge dich ein, um deine Nachrichten zu sehen.</p>;
+  }
+
   return (
     <div>
-      {/* Sidebar component for artist navigation */}
       <Sidebar />
-
-      {/* Chat component to handle messaging */}
-      <Chat />
+      <Chat currentUserId={currentUserId} />
     </div>
   );
 };
 
-// App Router pages don’t use `disableHeader` directly, 
-// you could handle layout changes in `layout.tsx` if needed
 export default ArtistMessagesPage;

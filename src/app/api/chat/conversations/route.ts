@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ChatService } from "@/server/modules/chat/chat.service";
+import { ChatService } from "@/infrastructure/services/chat.service";
 
 const chatService = new ChatService();
 
