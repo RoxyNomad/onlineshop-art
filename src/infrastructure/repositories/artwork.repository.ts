@@ -1,4 +1,4 @@
-import { pool } from "@/lib/db";
+import { pool } from "@/infrastructure/providers/db/db";
 import { UploadArtworkDTO } from "@/domain/artworks/dtos/artwork.dto";
 import { Artwork } from "@/domain/artworks/entities/artwork.entity";
 

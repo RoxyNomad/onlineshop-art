@@ -1,4 +1,4 @@
-import { query } from "@/lib/db";
+import { query } from "@/infrastructure/providers/db/db";
 import { Order } from "@/domain/order/entities/order.entity";
 
 /**

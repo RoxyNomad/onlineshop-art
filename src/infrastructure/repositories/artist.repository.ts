@@ -1,4 +1,4 @@
-import { query } from "@/lib/db";
+import { query } from "@/infrastructure/providers/db/db";
 import { Artist } from "@/domain/artist/entities/artist.entity";
 
 export interface UpdateArtistPayload {

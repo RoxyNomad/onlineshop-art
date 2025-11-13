@@ -1,4 +1,4 @@
-import { pool } from "@/lib/db";
+import { pool } from "@/infrastructure/providers/db/db";
 import { User } from "@/domain/auth/entities/user.entity";
 import { Artist } from "@/domain/auth/entities/artist.entity";
 

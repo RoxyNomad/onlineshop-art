@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id                String      @id @default(uuid())
+  name              String
+  email             String      @unique
+  createdAt         DateTime    @default(now())
+  messagesSent      Message[]   @relation("SentMessages")
+  messagesReceived  Message[]   @relation("ReceivedMessages")
+  cartItems         CartItem[]
+}
+
+model Artist {
+  id                Int         @id @default(autoincrement())
+  artistName        String
+  bio               String
+  portfolioUrl      String
+  profileImageUrl   String?
+  coverImageUrl     String?
+  artworks          Artwork[]
+  products          Product[]   @relation("ArtistProducts")
+}
+
+model Category {
+  id                String      @id @default(uuid())
+  name              String
+  artworks          Artwork[]
+}
+
+model Artwork {
+  id                String      @id @default(uuid())
+  artist            Artist      @relation(fields: [artistId], references: [id])
+  artistId          Int
+  category          Category    @relation(fields: [categoryId], references: [id])
+  categoryId        String
+  name              String
+  baseColor         String
+  price             Float
+  createdAt         DateTime    @default(now())
+  imageUrl          String
+  orderItems        OrderItem[]
+  cartItems         CartItem[]
+}
+
+enum OrderStatus {
+  Bestellt
+  Verschickt
+  Zugestellt
+}
+
+model Order {
+  id                String      @id @default(uuid())
+  name              String
+  customer          String
+  amount            Float
+  status            OrderStatus @default(Bestellt)
+  createdAt         DateTime    @default(now())
+  items             OrderItem[] 
+}
+
+model OrderItem {
+  id                Int         @id @default(autoincrement())
+  order             Order       @relation(fields: [orderId], references: [id])
+  orderId           String
+  quantity          Int
+  price             Float
+  artwork           Artwork     @relation(fields: [artworkId], references: [id])
+  artworkId         String
+}
+
+model CartItem {
+  artwork           Artwork     @relation(fields: [artworkId], references: [id])
+  artworkId         String
+  user              User        @relation(fields: [userId], references: [id])
+  userId            String
+  sizeId            String
+  frameId           String
+  quantity          Int
+  artworkName       String
+  price             Float
+  totalPrice        Float
+
+  @@id([artworkId, userId, sizeId, frameId])
+}
+
+model Message {
+  id                String      @id @default(uuid())
+  sender            User        @relation("SentMessages", fields: [senderId], references: [id])
+  senderId          String
+  receiver          User        @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId        String
+  message           String
+  createdAt         DateTime    @default(now())
+  isRead            Boolean     @default(false)
+}
+
+model Product {
+  id                String      @id @default(uuid())
+  name              String
+  artist            Artist      @relation("ArtistProducts", fields: [artistId], references: [id])
+  artistId          Int
+  price             Float
+  imageUrl          String
+  description       String?
+}

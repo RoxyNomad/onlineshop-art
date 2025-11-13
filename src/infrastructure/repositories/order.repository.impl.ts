@@ -1,6 +1,6 @@
 import { IOrderRepository } from "@/domain/order/repositories/order.repository";
 import { Order } from "@/domain/order/entities/order.entity";
-import { pool } from "@/lib/db"; // NeonDB connection
+import { pool } from "@/infrastructure/providers/db/db"; // NeonDB connection
 
 export class OrderRepository implements IOrderRepository {
   async getOrdersByUserId(userId: string): Promise<Order[]> {

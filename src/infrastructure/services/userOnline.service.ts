@@ -1,5 +1,5 @@
 // src/server/services/userOnline.service.ts
-import { pool } from "@/lib/db";
+import { pool } from "@/infrastructure/providers/db/db";
 
 export interface UserOnline {
     id: string;

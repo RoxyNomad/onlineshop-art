@@ -1,5 +1,5 @@
 // src/core/queries/artist/getArtistById.ts
-import { query } from "@/lib/db";
+import { query } from "@/infrastructure/providers/db/db";
 import { ArtistInfo } from "@/infrastructure/shared/types/artist.types";
 
 /**

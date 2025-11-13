@@ -1,6 +1,6 @@
 import { IArtworkRepository } from "@/domain/artworks/repositories/artwork.repository";
 import { Artwork } from "@/domain/artworks/entities/artwork.entity";
-import { pool } from "@/lib/db";
+import { pool } from "@/infrastructure/providers/db/db";
 
 export class ArtworkRepository implements IArtworkRepository {
   async getAllArtworks(): Promise<Artwork[]> {

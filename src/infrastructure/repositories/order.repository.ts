@@ -1,6 +1,6 @@
 import { OrderItem } from "@/domain/order/entities/order.entity";
 import { Artwork } from "@/domain/artworks/entities/artwork.entity";
-import { pool } from "@/lib/db";
+import { pool } from "@/infrastructure/providers/db/db";
 
 export class OrderRepository {
   async getOrdersGroupedByArtwork(artistId: string): Promise<{ artwork: Artwork; orders: OrderItem[] }[]> {

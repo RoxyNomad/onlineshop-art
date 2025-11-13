@@ -42,3 +42,4 @@ next-env.d.ts
 
 #notice files
 /_structure_documents
+/src/generated/prisma

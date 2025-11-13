@@ -1,4 +1,4 @@
-import { query } from '@/lib/db';
+import { query } from '@/infrastructure/providers/db/db';
 import { ArtistRepository } from '@/src/domain/artist/repositories/artist.repository';
 import { GetAllArtistsQuery } from '../getAllArtists.query';
 import { Artist } from '@/src/domain/artist/entities/artist.entity';

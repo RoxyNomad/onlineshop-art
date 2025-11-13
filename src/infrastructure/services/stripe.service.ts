@@ -1,6 +1,6 @@
 // src/server/services/stripe.service.ts
 import Stripe from "stripe";
-import { pool } from "@/lib/db"; // Neon DB Pool
+import { pool } from "@/infrastructure/providers/db/db"; // Neon DB Pool
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_TEST_KEY as string, {
     apiVersion: "2025-10-29.clover",
