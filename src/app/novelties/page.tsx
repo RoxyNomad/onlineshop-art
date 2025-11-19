@@ -1,32 +1,37 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { getLatestNoveltiesQuery } from '@/domain/novelties/queries/getNovelties.query';
-import { NoveltyEntity } from '@/domain/novelties/entities/novelty.entity';
-import { useSort } from '@/ui/hooks/useSort';
-import SelectionBar from '@/ui/shop/SelectionBarNovelties';
-import Image from 'next/image';
-import styles from '@/src/styles/novelties/novelties.module.scss';
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { NoveltiesEntity } from "@/domain/novelties/entities/novelties.entity";
+import SelectionBarNovelties from "@/ui/shop/SelectionBarNovelties";
+import { getNoveltiesByFilter } from "@/domain/novelties/handlers/novelties.handler";
+import { useNoveltiesSort } from "@/ui/hooks/useNoveltiesSort";
+import Image from "next/image";
+import styles from "@/ui/styles/novelties/novelties.module.scss";
 
 export default function NoveltiesPage() {
-  const [artworks, setArtworks] = useState<NoveltyEntity[]>([]);
-  const { pictures, handleSortChange, selectedOption, sortOptions } = useSort(artworks);
+  const searchParams = useSearchParams();
+  const [artistId, setArtistId] = useState<string>(searchParams.get("artist") || "");
+  const [novelties, setNovelties] = useState<NoveltiesEntity[]>([]);
+
+  const { novelties: pictures, selectedOption, sortOptions, handleSortChange } =
+    useNoveltiesSort(novelties);
 
   useEffect(() => {
-    (async () => {
-      const latest = await getLatestNoveltiesQuery();
-      setArtworks(latest);
-    })();
-  }, []);
+    const fetchData = async () => {
+      const filtered = await getNoveltiesByFilter({ artistId: artistId || undefined });
+      setNovelties(filtered);
+    };
+    fetchData();
+  }, [artistId]);
 
   return (
     <div>
-      <SelectionBar
+      <SelectionBarNovelties
         handleSortChange={handleSortChange}
-        handleColorChange={() => {}}
+        handleArtistChange={setArtistId}
         selectedOption={selectedOption}
         sortOptions={sortOptions}
-        pictures={pictures}
       />
 
       <section>
@@ -35,7 +40,7 @@ export default function NoveltiesPage() {
             <div key={pic.id} className={styles.pictureField}>
               <Image
                 className={styles.picture}
-                src={pic.image_url}
+                src={pic.imageUrl}
                 alt={pic.name}
                 width={200}
                 height={150}

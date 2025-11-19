@@ -14,8 +14,8 @@ export class GetArtistProfileQuery {
       user.name,
       user.email,
       user.userType,
-      artist?.artistName,
-      artist?.portfolioUrl
+      (user as any)?.artistName,
+      (user as any)?.portfolioUrl
     );
   }
 }

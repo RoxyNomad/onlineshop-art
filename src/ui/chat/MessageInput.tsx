@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "@/styles/modules/artists/messages.module.scss";
+import styles from "@/ui/styles/modules/artists/messages.module.scss";
 
 interface MessageInputProps {
   onSend: (message: string) => void; // Command-Handler aus Container

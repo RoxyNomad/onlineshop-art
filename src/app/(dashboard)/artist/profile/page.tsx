@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { Artist } from "@/domain/artist/entities/artist.entity";
-import styles from "@/styles/artists/profile.module.scss";
+import styles from "@/ui/styles/artists/profile.module.scss";
 import Sidebar from "@/ui/dashboard/artist/ArtistSidebar";
 import Image from "next/image";
 import Link from "next/link";

@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import styles from "@/styles/artists/artworks.module.scss";
-import type { Category, Artwork, Props } from "@/domain/artworks/entities/artwork.entity";
-import { fetchCategories } from "@/domain/artworks/queries/fetchCategories.query";
-import { createArtwork, createCategory } from "@/domain/artworks/commands/createArtwork.command";
+import styles from "@/ui/styles/artists/artworks.module.scss";
+import type { Category, Artwork, Props } from "@/domain/artwork/entities/artwork.entity";
+import { fetchCategories } from "@/domain/artwork/queries/fetchCategories.query";
+import { createArtwork, createCategory } from "@/domain/artwork/commands/createArtwork.command";
 
 export default function ImageUploader({ onUpload, artistId }: Props) {
 	const { data: session } = useSession();

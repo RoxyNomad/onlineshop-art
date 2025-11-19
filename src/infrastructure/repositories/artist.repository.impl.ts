@@ -1,19 +1,28 @@
-import { supabase } from '@/src/infrastructure/db/neonClient';
-import { ArtistRepository } from '@/src/domain/artist/repositories/artist.repository';
-import { Artist } from '@/src/domain/artist/entities/artist.entity';
-import { artistMapper } from '@/src/infrastructure/db/mappers/artist.mapper';
+import { ArtistRepository } from '@/domain/artist/repositories/artist.repository';
+import { Artist } from '@/domain/artist/entities/artist.entity';
+import { artistMapper } from '@/infrastructure/repositories/mappers/artist.mapper';
+import { query } from '@/infrastructure/providers/db/db';
 
+/**
+ * Server-side repository implementation using Prisma (via query wrapper).
+ * This file must remain on the server (used by API route / handlers).
+ */
 export class ArtistRepositoryImpl implements ArtistRepository {
   async findAll(): Promise<Artist[]> {
-    const { data, error } = await supabase
-      .from('artists')
-      .select('id, artist_name, bio, portfolio_url, profile_image_url, cover_image_url');
+    return query(async (prisma) => {
+      // Optionally add ordering or select fields
+      const results = await prisma.artist.findMany({
+        orderBy: { artistName: 'asc' },
+      });
+      return results.map(artistMapper.toDomain);
+    });
+  }
 
-    if (error) {
-      console.error('Error fetching artists:', error);
-      throw new Error('Failed to fetch artists');
-    }
-
-    return data.map(artistMapper.toDomain);
+  async findById(id: string): Promise<Artist | null> {
+    return query(async (prisma) => {
+      // Prisma Artist.id is Int in your schema (so convert)
+      const result = await prisma.artist.findUnique({ where: { id: Number(id) } });
+      return result ? artistMapper.toDomain(result) : null;
+    });
   }
 }

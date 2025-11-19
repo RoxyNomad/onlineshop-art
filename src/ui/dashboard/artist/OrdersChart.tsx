@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, TooltipItem } from "chart.js";
 import { Order } from "@/domain/order/entities/order.entity";
 import { fetchOrders } from "@/domain/order/queries/fetchOrders.query";
-import styles from "@/styles/components/ordersTable.module.scss";
+import styles from "@/ui/styles/components/ordersTable.module.scss";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 

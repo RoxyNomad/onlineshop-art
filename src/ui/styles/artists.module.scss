@@ -1,6 +1,6 @@
 // Importing variables and mixins for reuse throughout the styles
-@use 'variables' as vars;
-@use 'mixins' as mixins;
+@use './variables' as vars;
+@use './mixins' as mixins;
 
 // Container for the artist grid
 .artistContainer {

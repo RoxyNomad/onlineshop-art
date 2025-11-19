@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
-import { Artwork } from "@/domain/artworks/entities/artwork.entity";
+import { Artwork } from "@/domain/artworks/entities/artworks.entity";
 import Image from "next/image";
-import styles from "@/styles/modules/artist/artworks.module.scss";
+import styles from "@/ui/styles/modules/artist/artworks.module.scss";
 import Sidebar from "@/app/(dashboard)/artist/dashboard/page";
 import ImageUploader from "@/ui/dashboard/artist/ImageUploader";
 

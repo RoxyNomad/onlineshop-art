@@ -1,6 +1,6 @@
 // Import global variables and mixins
-@use '../variables' as vars; // Import global variables such as colors, font sizes, etc.
-@use '../mixins' as mixins; // Import reusable mixins (functions or reusable styles)
+@use '../../variables' as vars; // Import global variables such as colors, font sizes, etc.
+@use '../../mixins' as mixins; // Import reusable mixins (functions or reusable styles)
 
 // Styles for the profile page
 .profilePage {

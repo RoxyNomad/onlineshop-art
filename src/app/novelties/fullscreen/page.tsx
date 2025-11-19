@@ -1,39 +1,29 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { getAllNoveltiesQuery } from '@/domain/novelties/queries/getNovelties.query';
-import { NoveltyEntity } from '@/domain/novelties/entities/novelty.entity';
-import Image from 'next/image';
-import Link from 'next/link';
-import styles from '@/src/styles/novelties/noveltiesFullscreen.module.scss';
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { NoveltiesEntity } from "@/domain/novelties/entities/novelties.entity";
+import { getNoveltiesByFilter } from "@/domain/novelties/handlers/novelties.handler";
+import styles from "@/ui/styles/novelties/noveltiesFullscreen.module.scss";
 
 export default function NoveltiesFullscreenPage() {
-  const [pictures, setPictures] = useState<NoveltyEntity[]>([]);
+  const [pictures, setPictures] = useState<NoveltiesEntity[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    (async () => {
-      const all = await getAllNoveltiesQuery();
+    const fetchData = async () => {
+      const all = await getNoveltiesByFilter({});
       setPictures(all);
-    })();
+    };
+    fetchData();
   }, []);
 
-  const nextImage = () =>
-    setCurrentIndex((i) => (i + 1) % (pictures.length || 1));
+  const nextImage = () => setCurrentIndex((i) => (i + 1) % (pictures.length || 1));
   const prevImage = () =>
     setCurrentIndex((i) => (i - 1 + (pictures.length || 1)) % (pictures.length || 1));
 
   return (
     <div>
-      <section className={styles.selectionBar}>
-        <div className={styles.displaySelection}>
-          <Link href="/novelties">
-            <button className={styles.displaySelectionButtonStandart}>Standardanzeige</button>
-          </Link>
-          <button className={styles.displaySelectionButtonFullscreen}>Vollbildanzeige</button>
-        </div>
-      </section>
-
       <section className={styles.fullscreenContainer}>
         <button className={styles.prevButton} onClick={prevImage} disabled={!pictures.length}>
           Vorheriges
@@ -43,7 +33,7 @@ export default function NoveltiesFullscreenPage() {
           {pictures.length ? (
             <>
               <Image
-                src={pictures[currentIndex].image_url}
+                src={pictures[currentIndex].imageUrl}
                 alt={pictures[currentIndex].name}
                 width={800}
                 height={600}

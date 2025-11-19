@@ -1,5 +1,5 @@
 // Import global variables and mixins
-@use '../variables' as vars; // Importing the variables file (colors, fonts, etc.)
+@use '../../variables' as vars; // Importing the variables file (colors, fonts, etc.)
 
 // Styles for the upload container
 .uploadContainer {

@@ -1,6 +1,6 @@
 import localFont from "next/font/local";
 import Header from "@/ui/shop/Header";
-import "@/styles/global.module.scss";
+import "@/ui/styles/global.module.scss";
 import I18nProvider from "@/ui/common/I18nProvider";
 
 export const metadata = {

@@ -1,19 +1,17 @@
-import { query } from "@/infrastructure/providers/db/db";
+import { Color, formatColorName } from "@/domain/artworks/entities/filter.entity";
 
-/**
- * Fetch all distinct base colors from artworks table.
- * Returns a string array directly.
- */
-const fetchColors = async (): Promise<string[]> => {
+export async function fetchColors(): Promise<Color[]> {
   try {
-    const result = await query<{ base_color: string }>(
-      "SELECT DISTINCT base_color FROM artworks WHERE base_color IS NOT NULL"
-    );
-    return result.map((row) => row.base_color);
-  } catch (error) {
-    console.error("Error fetching colors:", error);
+    const res = await fetch("/api/colors");
+    if (!res.ok) throw new Error("Failed to fetch colors");
+
+    const data = (await res.json()) as { name: string }[];
+
+    return data.map((c) => ({
+      name: formatColorName(c.name),
+    }));
+  } catch (err) {
+    console.error("Error in fetchColors query:", err);
     return [];
   }
-};
-
-export default fetchColors;
+}

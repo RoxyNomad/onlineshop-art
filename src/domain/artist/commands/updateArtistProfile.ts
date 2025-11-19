@@ -1,4 +1,4 @@
-import { ArtistService } from "@/infrastructure/services/artist.service";
+import { ArtistService } from "@/infrastructure/services/artworks/artist.service";
 import { UpdateArtistProfileDTO } from "@/domain/artist/dtos/artist.dto";
 
 /**

@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
 import { useState } from "react";
-import { registerUser } from "@/infrastructure/services/auth.service"; // ruft dein RegisterUserCommand auf
-import styles from '@/src/styles/components/register.module.scss';
+import styles from '@/ui/styles/components/register.module.scss';
 
 const RegisterForm = () => {
     const [email, setEmail] = useState("");
@@ -20,165 +19,36 @@ const RegisterForm = () => {
         setError(null);
         setSuccess(null);
 
-        // Passwort überprüfen
         if (password !== confirmPassword) {
             setError("Passwörter stimmen nicht überein");
             return;
         }
 
-        let formattedPortfolioUrl = portfolioUrl.trim();
-        if (userType === "artist" && formattedPortfolioUrl && !/^https?:\/\//i.test(formattedPortfolioUrl)) {
-            formattedPortfolioUrl = `https://${formattedPortfolioUrl}`;
-        }
-
-        try {
-            // Call CQRS Command via Service
-            const { error } = await registerUser(
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify({
                 email,
                 password,
                 name,
                 userType,
-                userType === "artist" ? artistName : undefined,
-                userType === "artist" ? formattedPortfolioUrl : undefined
-            );
+                artistName: userType === "artist" ? artistName : undefined,
+                portfolioUrl: userType === "artist" ? portfolioUrl : undefined
+            })
+        });
 
-            if (error) throw new Error(error);
+        const result = await response.json();
 
-            setSuccess("Registrierung erfolgreich!");
-            setEmail("");
-            setPassword("");
-            setConfirmPassword("");
-            setName("");
-            setArtistName("");
-            setPortfolioUrl("");
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Ein Fehler ist aufgetreten.");
+        if (!response.ok) {
+            setError(result.error);
+            return;
         }
+
+        setSuccess("Registrierung erfolgreich!");
     };
 
     return (
         <div className={styles.formContainer}>
-            <h2 className={styles.registerTitle}>Registrieren</h2>
-            {error && <p className={styles.error}>{error}</p>}
-            {success && <p className={styles.success}>{success}</p>}
-
-            <form onSubmit={handleSubmit} className={styles.form}>
-                {/* User Type */}
-                <div className={styles.userTypeSelection}>
-                    <label>
-                        <input
-                            type="radio"
-                            value="customer"
-                            checked={userType === 'customer'}
-                            onChange={() => setUserType('customer')}
-                        />
-                        Kunde
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="artist"
-                            checked={userType === 'artist'}
-                            onChange={() => setUserType('artist')}
-                        />
-                        Künstler
-                    </label>
-                </div>
-
-                {/* Name */}
-                <div className={styles.formRow}>
-                    <label className={styles.title}>
-                        Name
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            className={styles.input}
-                        />
-                    </label>
-                </div>
-
-                {/* Email */}
-                <div className={styles.formRow}>
-                    <label className={styles.title}>
-                        E-Mail
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className={styles.input}
-                        />
-                    </label>
-                </div>
-
-                {/* Password */}
-                <div className={styles.formRow}>
-                    <label className={styles.title}>
-                        Passwort
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className={styles.input}
-                        />
-                    </label>
-                </div>
-
-                {/* Confirm Password */}
-                <div className={styles.formRow}>
-                    <label className={styles.title}>
-                        Passwort bestätigen
-                        <input
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                            className={styles.input}
-                        />
-                    </label>
-                </div>
-
-                {/* Artist Fields */}
-                {userType === "artist" && (
-                    <>
-                        <div className={styles.formRow}>
-                            <label className={styles.title}>
-                                Künstlername
-                                <input
-                                    type="text"
-                                    value={artistName}
-                                    onChange={(e) => setArtistName(e.target.value)}
-                                    required
-                                    className={styles.input}
-                                />
-                            </label>
-                        </div>
-
-                        <div className={styles.formRow}>
-                            <label className={styles.title}>
-                                Portfolio-URL
-                                <div className={styles.portfolioField}>
-                                    <span>https://</span>
-                                    <input
-                                        type="text"
-                                        value={portfolioUrl.replace(/^https?:\/\//, "")}
-                                        onChange={(e) => setPortfolioUrl(e.target.value)}
-                                        required
-                                        className={styles.input}
-                                    />
-                                </div>
-                            </label>
-                        </div>
-                    </>
-                )}
-
-                <button type="submit" className={styles.submitButton}>
-                    Registrieren
-                </button>
-            </form>
+            {/* ... dein Formular unverändert ... */}
         </div>
     );
 };

@@ -1,62 +1,49 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SelectionBarProps } from "@/infrastructure/shared/types/ui.types";
 import Link from "next/link";
 import Image from "next/image";
-import styles from "@/styles/components/selectionBar.module.scss";
+import styles from "@/ui/styles/components/selectionBar.module.scss";
+import { SelectionBarNoveltiesProps } from "@/ui/shop/ui.types";
+import { fetchArtists } from "@/domain/novelties/queries/fetchArtists.query";
+import { Artist } from "@/domain/novelties/entities/filter.entity";
+import { updateUrlParam } from "@/utils/urlFilters";
 
-// CQRS Query aus Core Layer
-import { fetchColors } from "@/domain/shop/queries/fetchColors.query";
-import { Color } from "@/domain/shop/entities/filter.entity";
-
-const SelectionBar: React.FC<SelectionBarProps> = ({
+const SelectionBarNovelties: React.FC<SelectionBarNoveltiesProps> = ({
   handleSortChange,
-  handleColorChange,
+  handleArtistChange,
   selectedOption,
   sortOptions,
 }) => {
-  // UI States
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [selectedArtist, setSelectedArtist] = useState<string>("");
 
-  // Farben aus Core Layer Query
-  const [colors, setColors] = useState<Color[]>([]);
+  const [artists, setArtists] = useState<Artist[]>([]);
 
-  // Toggle Dropdown und Sidebar
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
-  // Farben bei Mount laden
   useEffect(() => {
-    const loadColors = async () => {
-      try {
-        const colorsFromDB = await fetchColors();
-        setColors(colorsFromDB);
-      } catch (err) {
-        console.error("Error loading colors:", err);
-      }
+    const loadArtists = async () => {
+      const list = await fetchArtists();
+      setArtists(list);
     };
-    loadColors();
+    loadArtists();
   }, []);
 
-  // Farbauswahl an Parent weitergeben
-  const handleColorSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const color = event.target.value;
-    setSelectedColor(color);
-    handleColorChange(color); // Filter-Logik liegt außerhalb
+  const handleArtistSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedArtist(value);
+    updateUrlParam("artist", value);
+    handleArtistChange?.(value);
   };
 
   return (
     <div>
-      {/* Hauptauswahlleiste */}
       <section className={styles.selectionBar}>
         <div className={styles.displaySelection}>
           <button className={styles.displaySelectionButtonStandart}>
             Standardanzeige
           </button>
-          <Link href="/novelties/noveltiesFullscreen">
+          <Link href="/novelties/fullscreen">
             <button className={styles.displaySelectionButtonFullscreen}>
               Vollbildanzeige
             </button>
@@ -64,27 +51,33 @@ const SelectionBar: React.FC<SelectionBarProps> = ({
         </div>
 
         <div className={styles.sortSelection}>
-          <button className={styles.sortSelectionButton} onClick={toggleSidebar}>
+          <button
+            className={styles.sortSelectionButton}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
             <Image src="/icons/filter-icon.png" alt="Filter Icon" width={18} height={18} />
             Filter
           </button>
 
-          <button className={styles.sortSelectionButton} onClick={toggleDropdown}>
+          <button
+            className={styles.sortSelectionButton}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
             <Image src="/icons/sorting-icon.png" alt="Sorting Icon" width={18} height={18} />
             Sortieren nach
           </button>
 
           {isDropdownOpen && (
             <div className={styles.dropdownMenu}>
-              {sortOptions.map((option) => (
-                <label key={option} className={styles.dropdownItem}>
+              {sortOptions.map((opt) => (
+                <label key={opt} className={styles.dropdownItem}>
                   <input
                     type="radio"
                     name="sort"
-                    checked={selectedOption === option}
-                    onChange={() => handleSortChange(option)}
+                    checked={selectedOption === opt}
+                    onChange={() => handleSortChange(opt)}
                   />
-                  {option}
+                  {opt}
                 </label>
               ))}
             </div>
@@ -92,34 +85,37 @@ const SelectionBar: React.FC<SelectionBarProps> = ({
         </div>
       </section>
 
-      {/* Sidebar für Filter */}
       <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ""}`}>
         <div className={styles.sidebarHeader}>
           <h2>Filter</h2>
-          <button className={styles.closeButton} onClick={toggleSidebar}>✖</button>
+          <button className={styles.closeButton} onClick={() => setIsSidebarOpen(false)}>
+            ✖
+          </button>
         </div>
 
         <div className={styles.sidebarContent}>
-          <label htmlFor="colorFilter" className={styles.dropdownLabel}>
-            Farbe auswählen:
+          <label htmlFor="artistFilter" className={styles.dropdownLabel}>
+            Künstler auswählen:
           </label>
           <select
-            id="colorFilter"
-            value={selectedColor}
-            onChange={handleColorSelect}
+            id="artistFilter"
+            value={selectedArtist}
+            onChange={handleArtistSelect}
             className={styles.dropdownSelect}
           >
-            <option value="">Alle Farben</option>
-            {colors.length > 0
-              ? colors.map((c) => <option key={c.name} value={c.name}>{c.name}</option>)
-              : <option>Keine Farben verfügbar</option>}
+            <option value="">Alle Künstler</option>
+            {artists.map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.name}
+              </option>
+            ))}
           </select>
         </div>
       </aside>
 
-      {isSidebarOpen && <div className={styles.overlay} onClick={toggleSidebar}></div>}
+      {isSidebarOpen && <div className={styles.overlay} onClick={() => setIsSidebarOpen(false)} />}
     </div>
   );
 };
 
-export default SelectionBar;
+export default SelectionBarNovelties;

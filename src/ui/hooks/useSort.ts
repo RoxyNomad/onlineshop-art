@@ -1,40 +1,34 @@
 import { useState, useMemo } from 'react';
-import { Artwork } from '@/domain/artworks/entities/artwork.entity';
+import { ArtworksEntity } from '@/domain/artworks/entities/artworks.entity';
 
-// Custom React hook for sorting artworks in the frontend UI
-export const useSort = (initialArtworks: Artwork[]) => {
-  // State for currently selected sorting option
+export const useSort = (initialArtworks: ArtworksEntity[]) => {
   const [selectedOption, setSelectedOption] = useState<string>('Neueste');
+  const sortOptions = ["Neueste", "Älteste", "Preis ↑", "Preis ↓", "Name ↑", "Name ↓"];
 
-  // List of available sorting options for the dropdown
-  const sortOptions = ['Neueste', 'Preis aufsteigend', 'Preis absteigend'];
-
-  // Memoized sorted list (recomputes only when dependencies change)
-  const sortedArtworks = useMemo(() => {
-    const sorted = [...initialArtworks]; // Copy array to avoid mutating state
+  const artworks = useMemo(() => {
+    const sorted = [...initialArtworks];
 
     switch (selectedOption) {
-      case 'Neueste':
-        // Sort by creation date (newest first)
-        return sorted.sort(
-          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
-      case 'Preis aufsteigend':
-        // Sort by ascending price
+      case "Neueste":
+        return sorted.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+      case "Älteste":
+        return sorted.sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
+      case "Preis ↑":
         return sorted.sort((a, b) => a.price - b.price);
-      case 'Preis absteigend':
-        // Sort by descending price
+      case "Preis ↓":
         return sorted.sort((a, b) => b.price - a.price);
+      case "Name ↑":
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case "Name ↓":
+        return sorted.sort((a, b) => b.name.localeCompare(a.name));
       default:
         return sorted;
     }
   }, [selectedOption, initialArtworks]);
 
-  // Handler for updating the sort option
   const handleSortChange = (option: string) => {
     setSelectedOption(option);
   };
 
-  // Return state and helpers for UI use
-  return { selectedOption, sortOptions, artworks: sortedArtworks, handleSortChange };
+  return { artworks, selectedOption, sortOptions, handleSortChange };
 };

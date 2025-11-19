@@ -1,28 +1,34 @@
 import { AuthRepository } from "@/infrastructure/repositories/auth.repository";
 import { RegisterUserCommand } from "@/domain/auth/commands/registerUser.command";
+import { RegisterUserHandler } from "@/domain/auth/handlers/registerUser.handler";
 import { LoginUserCommand } from "@/domain/auth/commands/loginUser.command";
-import { GetUserQuery } from "@/domain/auth/queries/getUser.query";
+import { LoginUserHandler } from "@/domain/auth/handlers/loginUser.handler";
 
 const repo = new AuthRepository();
 
-export async function registerUser(
-    email: string,
-    password: string,
-    name: string,
-    userType: "customer" | "artist",
-    artistName?: string,
-    portfolioUrl?: string
+export async function registerUserService(
+  email: string,
+  password: string,
+  name: string,
+  userType: "customer" | "artist",
+  artistName?: string,
+  portfolioUrl?: string
 ) {
-    const command = new RegisterUserCommand(repo);
-    return await command.execute(email, password, name, userType, artistName, portfolioUrl);
+  const command = new RegisterUserCommand({
+    email,
+    password,
+    name,
+    userType,
+    artistName,
+    portfolioUrl,
+  });
+
+  const handler = new RegisterUserHandler(repo);
+  return await handler.execute(command);
 }
 
-export async function loginUser(email: string, password: string) {
-    const command = new LoginUserCommand(repo);
-    return await command.execute(email, password);
-}
-
-export async function getUserFromToken(token: string) {
-    const query = new GetUserQuery(repo);
-    return await query.execute(token);
+export async function loginUserService(email: string, password: string) {
+  const command = new LoginUserCommand(email, password);
+  const handler = new LoginUserHandler(repo);
+  return await handler.execute(command);
 }

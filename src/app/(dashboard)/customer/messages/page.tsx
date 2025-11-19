@@ -1,7 +1,7 @@
 import { NextPage } from "next"; // Importing the NextPage type from Next.js
 import Sidebar from "@/ui/dashboard/customer/CustomerSiderbar"; // Importing the Sidebar component for customers
 import Chat from "@/ui/chat/ChatContainer"; // Importing the Chat component to handle messaging
-import styles from '@/styles/customer/shop.module.scss'; // Importing the styles for the customer shop page
+import styles from '@/ui/styles/customer/shop.module.scss'; // Importing the styles for the customer shop page
 
 // The main CustomerMessages component
 const CustomerMessages: NextPage & { disableHeader?: boolean } = () => {

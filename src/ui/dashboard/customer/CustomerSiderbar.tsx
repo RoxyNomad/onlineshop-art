@@ -1,6 +1,6 @@
 "use client"; // Damit useState und useEffect im App Router funktionieren
 
-import styles from '@/styles/customer/sidebar.module.scss';
+import styles from '@/ui/styles/customer/sidebar.module.scss';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'; // Neuer App Router Hook
 import { logoutUser } from "@/infrastructure/services/auth.service";

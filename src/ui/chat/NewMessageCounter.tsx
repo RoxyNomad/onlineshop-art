@@ -4,7 +4,7 @@ import { getUnreadMessagesQuery } from "@/domain/chat/queries/getUnreadMessages.
 import { getSenderNamesQuery } from "@/domain/chat/queries/getSenderNames.query";
 import { markMessagesAsReadCommand } from "@/domain/chat/commands/markMessageAsRead.command";
 import { UnreadMessage } from "@/domain/chat/entities/unreadMessage.entity";
-import styles from "@/styles/components/counter.module.scss";
+import styles from "@/ui/styles/components/counter.module.scss";
 
 /**
  * UI component that displays unread messages count per sender.

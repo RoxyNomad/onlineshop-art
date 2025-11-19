@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Sidebar from "@/ui/dashboard/customer/CustomerSiderbar";
 import CheckoutButton from "@/ui/dashboard/customer/CheckoutButton";
-import { Artwork } from "@/domain/artworks/entities/artwork.entity";
+import { Artwork } from "@/domain/artworks/entities/artworks.entity";
 import { CartItem } from "@/domain/shop/entities/cartItem.entity";
 import { WishlistItem } from "@/domain/shop/entities/wishlistItem.entity";
 import { ArtworkRepository } from "@/infrastructure/repositories/artwork.repository.impl";
@@ -14,7 +14,7 @@ import { GetCartQuery } from "@/domain/shop/queries/getCart.query";
 import { GetWishlistQuery } from "@/domain/shop/queries/getWishlist.query";
 import { AddToCartCommand } from "@/domain/shop/commands/addToCart.command";
 import { AddToWishlistCommand } from "@/domain/shop/commands/addToWishlist.command";
-import styles from "@/src/styles/customer/shop.module.scss";
+import styles from "@/ui/styles/customer/shop.module.scss";
 
 const Shop = () => {
   const [artworks, setArtworks] = useState<Artwork[]>([]);

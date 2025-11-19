@@ -1,66 +1,65 @@
-import { NextRequest, NextResponse } from "next/server";
-import { uploadArtwork } from "@/domain/artworks/commands/uploadArtwork.command";
-import { getArtworksByArtist } from "@/domain/artworks/queries/getArtworksByArtist.query";
-import { Artwork } from "@/infrastructure/shared/types/artwork.types";
+import { NextResponse } from "next/server";
+import prisma from "@/infrastructure/providers/db/db";
+import { CreateArtworkDTO } from "@/domain/artworks/dtos/artworks.dto";
 
-// POST: Upload a new artwork
-export const POST = async (req: NextRequest) => {
+// GET /api/artworks?page=1&limit=20&sort=price&order=asc
+export async function GET(req: Request) {
   try {
-    const {
-      artistId,
-      name,
-      baseColor,
-      price,
-      categoryId,
-      imageUrl,
-    }: {
-      artistId: string;
-      name: string;
-      baseColor: string;
-      price: number;
-      categoryId?: number;
-      imageUrl: string;
-    } = await req.json();
+    const { searchParams } = new URL(req.url);
 
-    const newArtwork: Artwork = await uploadArtwork({
-      artistId,
-      name,
-      baseColor,
-      price,
-      categoryId,
-      imageUrl,
+    const page = Number(searchParams.get("page") || 1);
+    const limit = Number(searchParams.get("limit") || 20);
+
+    const sort = searchParams.get("sort") || "createdAt";
+    const order = searchParams.get("order") === "asc" ? "asc" : "desc";
+
+    const artworks = await prisma.artwork.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: {
+        [sort]: order
+      },
+      include: {
+        artist: true,
+        category: true
+      }
     });
 
-    return NextResponse.json({ artwork: newArtwork }, { status: 201 });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error(error.message);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    } else {
-      console.error("Unknown error", error);
-      return NextResponse.json({ error: "Unknown error" }, { status: 500 });
-    }
-  }
-};
+    const total = await prisma.artwork.count();
 
-// GET: Get all artworks for a specific artist
-export const GET = async (req: NextRequest) => {
+    return NextResponse.json({
+      data: artworks,
+      pagination: {
+        page,
+        limit,
+        total,
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching artworks:", error);
+    return NextResponse.json({ error: "Failed to load artworks" }, { status: 500 });
+  }
+}
+
+// POST /api/artworks
+export async function POST(req: Request) {
   try {
-    const artistId = req.nextUrl.searchParams.get("artistId");
-    if (!artistId) {
-      return NextResponse.json({ error: "artistId is required" }, { status: 400 });
-    }
+    const body: CreateArtworkDTO = await req.json();
 
-    const artworks: Artwork[] = await getArtworksByArtist(artistId);
+    const created = await prisma.artwork.create({
+      data: {
+        name: body.name,
+        imageUrl: body.imageUrl,
+        baseColor: body.baseColor,
+        price: body.price,
+        artistId: body.artistId,
+        categoryId: body.categoryId,
+      },
+    });
 
-    return NextResponse.json({ artworks }, { status: 200 });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error(error.message);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    } else {
-      console.error("Unknown error", error);
-      return NextResponse.json({ error: "Unknown error" }, { status: 500 });
-    }
+    return NextResponse.json(created, { status: 201 });
+  } catch (error) {
+    console.error("Error creating artwork:", error);
+    return NextResponse.json({ error: "Failed to create artwork" }, { status: 500 });
   }
-};
+}

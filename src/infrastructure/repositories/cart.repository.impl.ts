@@ -1,5 +1,5 @@
-import { IArtworkRepository } from "@/domain/artworks/repositories/artwork.repository";
-import { Artwork } from "@/domain/artworks/entities/artwork.entity";
+import { IArtworkRepository } from "@/domain/artworks/repositories/artworks.repository";
+import { Artwork } from "@/domain/artworks/entities/artworks.entity";
 import { pool } from "@/infrastructure/providers/db/db";
 
 export class ArtworkRepository implements IArtworkRepository {

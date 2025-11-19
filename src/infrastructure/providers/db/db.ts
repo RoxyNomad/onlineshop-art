@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/generated/prisma/client';
+import { PrismaClient } from './prisma/generated/client';
 
 // ✅ Singleton-PrismaClient: verhindert mehrfaches Erstellen in dev/hot-reload
 let prisma: PrismaClient;

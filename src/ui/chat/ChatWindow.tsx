@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { ChatMessage, ChatUser } from "@/domain/chat/entities/chat.entity";
-import styles from "@/styles/modules/artists/messages.module.scss";
+import styles from "@/ui/styles/modules/artists/messages.module.scss";
 
 interface ChatWindowProps {
   chatUser: ChatUser;

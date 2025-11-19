@@ -1,34 +1,49 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/infrastructure/services/auth.service"; // ruft LoginUserCommand auf
-import styles from "@/src/styles/components/login.module.scss";
+import styles from "@/ui/styles/components/login.module.scss";
 
 const LoginForm: React.FC = () => {
+    // Local form state
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+
     const router = useRouter();
 
+    /**
+     * Handles the login form submission
+     */
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
         setLoading(true);
         setError(null);
 
         try {
-            const { user, error } = await loginUser(email, password);
-            if (error) {
-                setError(error);
+            // Call the backend API (not the service!)
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                body: JSON.stringify({ email, password }),
+            });
+
+            const result = await response.json();
+
+            // Handle API errors
+            if (!response.ok) {
+                setError(result.error || "Login failed");
                 return;
             }
+
+            const { user } = result;
 
             if (!user?.userType) {
-                setError("Fehler: Nutzertyp nicht gefunden.");
+                setError("Could not determine user role.");
                 return;
             }
 
+            // Redirect based on user type
             switch (user.userType) {
                 case "artist":
                     router.push("/artist/artistDashboard");
@@ -37,11 +52,16 @@ const LoginForm: React.FC = () => {
                     router.push("/customer/shop");
                     break;
                 default:
-                    setError("Ungültiger Nutzertyp.");
+                    setError("Invalid user type.");
                     break;
             }
+
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Ein unerwarteter Fehler ist aufgetreten.");
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : "Unexpected error occurred."
+            );
         } finally {
             setLoading(false);
         }
@@ -50,9 +70,13 @@ const LoginForm: React.FC = () => {
     return (
         <div className={styles.loginContainer}>
             <h2 className={styles.loginTitle}>Login</h2>
+
+            {/* Error display */}
             {error && <p className={styles.errorText}>{error}</p>}
 
             <form onSubmit={handleLogin} className={styles.loginForm}>
+
+                {/* Email field */}
                 <div className={styles.formRow}>
                     <label>E-Mail</label>
                     <input
@@ -63,6 +87,7 @@ const LoginForm: React.FC = () => {
                     />
                 </div>
 
+                {/* Password field */}
                 <div className={styles.formRow}>
                     <label>Passwort</label>
                     <input
@@ -73,6 +98,7 @@ const LoginForm: React.FC = () => {
                     />
                 </div>
 
+                {/* Submit button */}
                 <button type="submit" disabled={loading}>
                     {loading ? "Lädt..." : "Einloggen"}
                 </button>

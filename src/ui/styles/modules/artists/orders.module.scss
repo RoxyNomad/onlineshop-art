@@ -1,5 +1,5 @@
 // Import global variables and mixins
-@use '../variables' as vars; // Import the global variables such as colors, font sizes, etc.
+@use '../../variables' as vars; // Import the global variables such as colors, font sizes, etc.
 
 // Styles for the orders page
 .ordersPage {

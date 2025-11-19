@@ -1,5 +1,5 @@
 export interface UpdateArtistProfileDTO {
-  artistId: string;
+  artistId: number;
   name: string;
   bio: string;
   portfolioUrl: string;

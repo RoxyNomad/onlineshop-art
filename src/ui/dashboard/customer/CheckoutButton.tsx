@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import styles from "@/styles/customer/checkoutButton.module.scss";
+import styles from "@/ui/styles/customer/checkoutButton.module.scss";
 import { fetchCurrentUser, User } from "@/domain/shop/queries/fetchCurrentUser.query";
 
 const stripePromise = loadStripe(

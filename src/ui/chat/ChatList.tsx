@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/styles/modules/artists/messages.module.scss";
+import styles from "@/ui/styles/modules/artists/messages.module.scss";
 import { ChatUser } from "@/domain/chat/entities/chat.entity";
 
 interface ChatListProps {

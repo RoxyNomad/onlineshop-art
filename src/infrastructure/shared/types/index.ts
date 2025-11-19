@@ -6,4 +6,4 @@ export * from "@/infrastructure/shared/types/artist.types";
 export * from "@/infrastructure/shared/types/message.types";
 export * from "@/infrastructure/shared/types/product.types";
 export * from "@/infrastructure/shared/types/user.types";
-export * from "@/infrastructure/shared/types/ui.types";
+export * from "@/ui/shop/ui.types";

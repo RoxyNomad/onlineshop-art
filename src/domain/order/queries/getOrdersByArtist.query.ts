@@ -1,5 +1,5 @@
 import { OrderItem } from "@/domain/order/entities/order.entity";
-import { Artwork } from "@/domain/artworks/entities/artwork.entity";
+import { Artwork } from "@/domain/artworks/entities/artworks.entity";
 import { OrderRepository } from "@/infrastructure/repositories/order.repository";
 
 export interface OrdersByArtworkDTO {

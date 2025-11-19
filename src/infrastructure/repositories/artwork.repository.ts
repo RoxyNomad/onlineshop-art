@@ -1,6 +1,6 @@
 import { pool } from "@/infrastructure/providers/db/db";
-import { UploadArtworkDTO } from "@/domain/artworks/dtos/artwork.dto";
-import { Artwork } from "@/domain/artworks/entities/artwork.entity";
+import { UploadArtworkDTO } from "@/domain/artworks/dtos/artworks.dto";
+import { Artwork } from "@/domain/artworks/entities/artworks.entity";
 
 export class ArtworkRepository {
   async findByArtistId(artistId: string): Promise<Artwork[]> {

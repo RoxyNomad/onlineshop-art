@@ -5,7 +5,7 @@ import Sidebar from "@/ui/dashboard/customer/CustomerSiderbar";
 import { Order } from "@/domain/order/entities/order.entity";
 import { OrderRepository } from "@/infrastructure/repositories/order.repository.impl";
 import { GetOrdersByUserQuery } from "@/domain/order/queries/getOrdersByUser.query";
-import styles from "@/src/styles/customer/myOrders.module.scss";
+import styles from "@/ui/styles/customer/myOrders.module.scss";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);

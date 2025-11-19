@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Sidebar from "@/app/(dashboard)/artist/dashboard/page";
 import Image from "next/image";
-import styles from "@/src/styles/artists/orders.module.scss";
+import styles from "@/ui/styles/artists/orders.module.scss";
 
 // Core
 import { getOrdersByArtistQuery, OrdersByArtworkDTO } from "@/domain/order/queries/getOrdersByArtist.query";

@@ -9,7 +9,7 @@ import { fetchUsersQuery } from "@/domain/chat/queries/getUsers.query";
 import { fetchMessagesQuery } from "@/domain/chat/queries/getMessages.query";
 import { sendMessageCommand } from "@/domain/chat/commands/sendMessage.command";
 import socket from "@/infrastructure/providers/socket/client";
-import styles from "@/styles/artists/messages.module.scss";
+import styles from "@/ui/styles/artists/messages.module.scss";
 import ChatListContainer from "./ChatListContainer";
 
 interface ChatContainerProps {

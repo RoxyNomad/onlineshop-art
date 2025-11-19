@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import styles from '@/src/styles/products/success.module.scss';
+import styles from '@/ui/styles/products/success.module.scss';
 
 // Define the SuccessPage component as a Next.js page
 // It also has a custom property `disableHeader` to hide the header

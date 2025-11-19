@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import styles from '@/src/styles/products/cancel.module.scss';
+import styles from '@/ui/styles/products/cancel.module.scss';
 
 // Define the CancelPage component as a Next.js page
 // It also has a custom property `disableHeader` to hide the header

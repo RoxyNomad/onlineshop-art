@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/src/styles/global.module.scss";
+import styles from "@/ui/styles/global.module.scss";
 import Link from "next/link";
 import Image from "next/image";
 import LoginForm from "@/ui/auth/LoginForm";
@@ -53,7 +53,7 @@ const Header = () => {
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            <Link href="/photography/photography" className={styles.navLink3}>Fotografien</Link>
+            <Link href="/artworks/artworks" className={styles.navLink3}>Kunstwerke</Link>
 
             {isDropdownOpen && (
               <div className={styles.dropdownMenu}>
@@ -61,7 +61,7 @@ const Header = () => {
                   categories.map((category) => (
                     <Link
                       key={category.id}
-                      href={`/photography/${category.id}`}
+                      href={`/artworks/${category.id}`}
                       className={styles.dropdownItem}
                     >
                       {category.name}
