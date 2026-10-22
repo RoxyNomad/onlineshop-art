@@ -1,17 +1,8 @@
-// src/shared/infrastructure/auth/client.ts
 import { createAuthClient } from "better-auth/react";
-import { sentinelClient } from "@better-auth/infra/client"; // Das Gegenstück zum Server-Plugin
 
 export const authClient = createAuthClient({
     baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-    plugins: [
-        sentinelClient()
-    ]
+    // KEINE plugins: [ sentinelClient() ] hier!
 });
 
-export const { 
-    signIn, 
-    signOut, 
-    signUp, 
-    useSession 
-} = authClient;
+export const { signIn, signOut, signUp, useSession } = authClient;
