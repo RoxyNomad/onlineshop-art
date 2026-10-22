@@ -1,144 +1,232 @@
 onlineshop-art/
-	_structure_documents/
-	node_modules/
-	src/
-		app/
-			(dashboard)/
-				artist/
-					artworks/
-					dashboard/
-					messages/
-					orders/
-					profile/
-				customer/
-					messages/
-			api/
-				artworks/
-					[id]/
-					filter/
-				auth/
-					login/
-					register/
-				categories/
-				chat/
-					[contactId]/
-					conversations/
-				checkout/
-				colors/
-				orders/
-				products/
-				profile/
-				socket/
-				user/
-				users/
-				webhook/
-			artist/
-			novelties/
-				fullscreen/
-			photography/
-				[categoryId]/
-				fullscreen/
-			products/
-		domain/
-			artist/
-				commands/
-				dtos/
-				entities/
-				handlers/
-				queries/
-				repositories/
-				valueObjects/
-			artwork/
-				commands/
-				dtos/
-				entities/
-				handlers/
-				queries/
-				repositories/
-				valueObjects/
-			artworks/
-				commands/
-				dtos/
-				entities/
-				handlers/
-				queries/
-				repositories/
-				valueObjects/
-			auth/
-				commands/
-				dtos/
-				entities/
-				queries/
-				repositories/
-				valueObjects/
-			chat/
-				commands/
-				dtos/
-				entities/
-				queries/
-				repositories/
-			language/
-				commands/
-				entities/
-				queries/
-			novelties/
-				dtos/
-				entities/
-				handlers/
-				queries/
-				repositories/
-				valueObjects/
-			order/
-				dtos/
-				entities/
-				queries/
-				repositories/
-			shop/
-				commands/
-				entities/
-				queries/
-				repositories/
-		infrastructure/
-			middlewares/
-			providers/
-				db/
-					prisma/
-						generated/
-							internal/
-							models/
-						migrations/
-							20251113072101_init/
-				socket/
-			repositories/
-				mappers/
-			services/
-				artworks/
-			shared/
-				types/
-		public/
-			example_pictures/
-			fonts/
-			icons/
-		ui/
-			auth/
-			chat/
-			common/
-			dashboard/
-				artist/
-				customer/
-			hooks/
-			locales/
-				de/
-				en/
-				fr/
-				it/
-			shop/
-			styles/
-				components/
-				modules/
-					artist/
-					customer/
-					novelties/
-					photography/
-					products/
-		utils/
+├── _structure_documents/
+├── node_modules/
+├── public/
+│   ├── example_pictures/
+│   ├── fonts/
+│   └── icons/
+├── drizzle/                         # Drizzle Migrations-Output & Snapshots
+│   └── migrations/
+├── drizzle.config.ts                # Globales Drizzle Config File
+└── src/
+    ├── app/                         # Next.js App Router (Routing & Pages Layer)
+    │   ├── (dashboard)/
+    │   │   ├── artist/
+    │   │   │   ├── artworks/
+    │   │   │   ├── dashboard/
+    │   │   │   ├── messages/
+    │   │   │   ├── orders/
+    │   │   │   └── profile/
+    │   │   └── customer/
+    │   │       └── messages/
+    │   ├── api/                     # API Routes (delegieren direkt an Application Handler)
+    │   │   ├── artworks/
+    │   │   │   ├── [id]/
+    │   │   │   └── filter/
+    │   │   ├── auth/
+    │   │   │   ├── login/
+    │   │   │   └── register/
+    │   │   ├── categories/
+    │   │   ├── chat/
+    │   │   │   ├── [contactId]/
+    │   │   │   └── conversations/
+    │   │   ├── checkout/
+    │   │   ├── colors/
+    │   │   ├── orders/
+    │   │   ├── products/
+    │   │   ├── profile/
+    │   │   ├── socket/
+    │   │   ├── user/
+    │   │   ├── users/
+    │   │   └── webhook/
+    │   ├── artist/
+    │   ├── novelties/
+    │   │   └── fullscreen/
+    │   ├── photography/
+    │   │   ├── [categoryId]/
+    │   │   └── fullscreen/
+    │   ├── products/
+    │   ├── favicon.ico
+    │   ├── globals.css
+    │   ├── layout.tsx
+    │   └── page.tsx
+    │
+    ├── modules/                     # Business-Module (Domain + CQRS + Infrastructure)
+    │   ├── artist/
+    │   │   ├── application/
+    │   │   │   ├── commands/
+    │   │   │   ├── dtos/
+    │   │   │   ├── handlers/
+    │   │   │   └── queries/
+    │   │   ├── domain/
+    │   │   │   ├── entities/
+    │   │   │   ├── repositories/
+    │   │   │   └── valueObjects/
+    │   │   ├── infrastructure/
+    │   │   │   ├── db/
+    │   │   │   │   └── schema.ts    # Drizzle Schema-Definition für dieses Modul
+    │   │   │   ├── mappers/
+    │   │   │   └── repositories/
+    │   │   └── ui/
+    │   │       └── components/
+    │   │
+    │   ├── artwork/
+    │   │   ├── application/
+    │   │   │   ├── commands/
+    │   │   │   ├── dtos/
+    │   │   │   ├── handlers/
+    │   │   │   └── queries/
+    │   │   ├── domain/
+    │   │   │   ├── entities/
+    │   │   │   ├── repositories/
+    │   │   │   └── valueObjects/
+    │   │   ├── infrastructure/
+    │   │   │   ├── db/
+    │   │   │   │   └── schema.ts
+    │   │   │   ├── mappers/
+    │   │   │   └── repositories/
+    │   │   └── ui/
+    │   │       └── components/
+    │   │
+    │   ├── auth/
+    │   │   ├── application/
+    │   │   │   ├── commands/
+    │   │   │   ├── dtos/
+    │   │   │   ├── handlers/
+    │   │   │   └── queries/
+    │   │   ├── domain/
+    │   │   │   ├── entities/
+    │   │   │   ├── repositories/
+    │   │   │   └── valueObjects/
+    │   │   ├── infrastructure/
+    │   │   │   ├── db/
+    │   │   │   │   └── schema.ts
+    │   │   │   ├── mappers/
+    │   │   │   └── repositories/
+    │   │   └── ui/
+    │   │       └── components/
+    │   │
+    │   ├── chat/
+    │   │   ├── application/
+    │   │   │   ├── commands/
+    │   │   │   ├── dtos/
+    │   │   │   ├── handlers/
+    │   │   │   └── queries/
+    │   │   ├── domain/
+    │   │   │   ├── entities/
+    │   │   │   └── repositories/
+    │   │   ├── infrastructure/
+    │   │   │   ├── db/
+    │   │   │   │   └── schema.ts
+    │   │   │   ├── mappers/
+    │   │   │   └── repositories/
+    │   │   └── ui/
+    │   │       └── components/
+    │   │
+    │   ├── language/                # Reines Hilfsmodul für Sprachkonfiguration/Übersetzung
+    │   │   ├── application/
+    │   │   │   ├── commands/
+    │   │   │   └── queries/
+    │   │   └── domain/
+    │   │       └── entities/
+    │   │
+    │   ├── novelties/
+    │   │   ├── application/
+    │   │   │   ├── dtos/
+    │   │   │   ├── handlers/
+    │   │   │   └── queries/
+    │   │   ├── domain/
+    │   │   │   ├── entities/
+    │   │   │   ├── repositories/
+    │   │   │   └── valueObjects/
+    │   │   ├── infrastructure/
+    │   │   │   ├── db/
+    │   │   │   │   └── schema.ts
+    │   │   │   ├── mappers/
+    │   │   │   └── repositories/
+    │   │   └── ui/
+    │   │       └── components/
+    │   │
+    │   ├── order/
+    │   │   ├── application/
+    │   │   │   ├── commands/
+    │   │   │   ├── dtos/
+    │   │   │   ├── handlers/
+    │   │   │   └── queries/
+    │   │   ├── domain/
+    │   │   │   ├── entities/
+    │   │   │   └── repositories/
+    │   │   ├── infrastructure/
+    │   │   │   ├── db/
+    │   │   │   │   └── schema.ts
+    │   │   │   ├── mappers/
+    │   │   │   └── repositories/
+    │   │   └── ui/
+    │   │       └── components/
+    │   │
+    │   ├── shop/
+    │   │   ├── application/
+    │   │   │   ├── commands/
+    │   │   │   ├── handlers/
+    │   │   │   └── queries/
+    │   │   ├── domain/
+    │   │   │   ├── entities/
+    │   │   │   └── repositories/
+    │   │   ├── infrastructure/
+    │   │   │   ├── db/
+    │   │   │   │   └── schema.ts
+    │   │   │   ├── mappers/
+    │   │   │   └── repositories/
+    │   │   └── ui/
+    │   │       └── components/
+    │   │
+    │   └── user/
+    │       ├── application/
+    │       │   ├── commands/
+    │       │   ├── dtos/
+    │       │   ├── handlers/
+    │       │   └── queries/
+    │       ├── domain/
+    │       │   ├── entities/
+    │       │   └── repositories/
+    │       ├── infrastructure/
+    │       │   ├── db/
+    │       │   │   └── schema.ts
+    │       │   ├── mappers/
+    │       │   └── repositories/
+    │       └── ui/
+    │           └── components/
+    │
+    ├── shared/                      # Module-übergreifende Infrastruktur & Utilities
+    │   ├── config/
+    │   ├── infrastructure/
+    │   │   ├── db/
+    │   │   │   ├── client.ts        # Drizzle Database Connection Instance
+    │   │   │   └── schema.ts        # Exportiert alle Schema-Dateien aus den Modulen
+    │   │   ├── middlewares/
+    │   │   └── socket/
+    │   ├── types/
+    │   └── utils/
+    │
+    └── ui/                          # Übergreifendes Design-System & Globale UI Components
+        ├── auth/
+        ├── chat/
+        ├── common/
+        ├── dashboard/
+        │   ├── artist/
+        │   └── customer/
+        ├── hooks/
+        ├── locales/
+        │   ├── de/
+        │   ├── en/
+        │   ├── fr/
+        │   └── it/
+        ├── shop/
+        └── styles/
+            ├── components/
+            └── modules/
+                ├── artist/
+                ├── customer/
+                ├── novelties/
+                ├── photography/
+                └── products/
