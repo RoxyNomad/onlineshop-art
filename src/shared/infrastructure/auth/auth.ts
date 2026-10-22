@@ -3,19 +3,19 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/shared/infrastructure/db/client";
 import * as schema from "@/shared/infrastructure/db/schema";
-import { dash } from "@better-auth/infra"; // Falls du das Plugin installiert hast
+import { dash } from "@better-auth/infra";
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: "pg",
-        schema: {
-            ...schema,
-        }
+        schema: { ...schema }
     }),
     emailAndPassword: {  
         enabled: true,
     },
     plugins: [
-        dash() // Optionales Infrastruktur-Dashboard-Plugin
+        dash({
+            apiKey: process.env.BETTER_AUTH_API_KEY, // <--- Explizit mitgeben!
+        })
     ]
 });
