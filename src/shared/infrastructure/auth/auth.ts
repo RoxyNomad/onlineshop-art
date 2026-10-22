@@ -10,12 +10,16 @@ export const auth = betterAuth({
         provider: "pg",
         schema: { ...schema }
     }),
+    // Hier explizit übergeben:
+    secret: process.env.BETTER_AUTH_SECRET,
+    baseURL: process.env.BETTER_AUTH_URL || "https://onlineshop-art.vercel.app",
+    
     emailAndPassword: {  
         enabled: true,
     },
     plugins: [
         dash({
-            apiKey: process.env.BETTER_AUTH_API_KEY, // <--- Explizit mitgeben!
+            apiKey: process.env.BETTER_AUTH_API_KEY,
         })
     ]
 });
