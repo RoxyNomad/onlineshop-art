@@ -1,0 +1,31 @@
+@use "variables" as v;
+@use "mixins" as m;
+
+/* --- Grid System --- */
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: v.$spacing-md;
+  padding-right: v.$spacing-md;
+
+  @include m.md {
+    padding-left: v.$spacing-lg;
+    padding-right: v.$spacing-lg;
+  }
+}
+
+.grid-gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: v.$spacing-lg;
+
+  @include m.md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include m.lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

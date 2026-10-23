@@ -1,0 +1,30 @@
+@use "variables" as v;
+
+/* --- Mixins --- */
+
+// Flexbox Centering
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flexbox Column Spaced
+@mixin flex-column-gap($gap: v.$spacing-md) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+// Media Queries (Responsive Breakpoints)
+@mixin md {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
