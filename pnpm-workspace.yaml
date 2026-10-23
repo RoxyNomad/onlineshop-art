@@ -1,6 +1,8 @@
 allowBuilds:
   builds: true
 permissions:
+  '@parcel/watcher':
+    build: false
   builds:
     skills: true
   esbuild:
