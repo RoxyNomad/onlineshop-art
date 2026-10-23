@@ -14,16 +14,19 @@
     "@better-auth/infra": "^0.4.20",
     "@neondatabase/serverless": "^1.2.0",
     "better-auth": "^1.7.12",
+    "cloudinary": "^2.11.0",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "scss": "^0.2.4"
+    "scss": "^0.2.4",
+    "stripe": "^23.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/stripe": "^8.0.417",
     "babel-plugin-react-compiler": "1.0.0",
     "dotenv": "^18.0.8",
     "drizzle-kit": "^0.31.11",
